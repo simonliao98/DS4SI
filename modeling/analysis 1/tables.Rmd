@@ -1,0 +1,39 @@
+---
+title: "tables"
+author: "Chongjun Liao"
+date: "11/29/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(knitr)
+library(kableExtra)
+t2=readRDS("table2.rds")
+t3=readRDS("table3.rds")
+t4=readRDS("table4.rds")
+t5=readRDS("table5.rds")
+```
+
+In the paper it says that applicants who reported household income below `$10,000` (n=1911) are excluded in the regression analyses since they suspected that many of those applicants may have misreported parental income. The first analysis we do is to include those applicants who reported a household income below `$10,000` and see how these data impact the regression results.
+
+
+```{r}
+rownames(t4)=c()
+knitr::kable(list(t2, t4),digits=3,caption = 
+               'topics dictionary patterns and sat on household income, 
+             excluded vs included', booktabs = TRUE, valign = 't')
+```
+
+Table 1 shows the results of the regressions of SAT scores, topics and dictionary patterns on household incomes that excludes applicants on the left and the results of the regressions that includes applicants on the right. The results are close.
+
+```{r}
+rownames(t5)=c()
+knitr::kable(list(t3, t5),digits=3,caption = 'topics and dictionary patterns on 
+             sat, excluded vs included', booktabs = TRUE, valign = 't')
+```
+
+Table 2 shows results of regression of topics and dictionary patterns on SAT scores. Again, there is no big difference after including applicants who reported household incomes below `$10,000`. A potential reason is that the excluded applicants (n=1911) are really small proportion of the whole data (N=59723)

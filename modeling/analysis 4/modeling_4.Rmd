@@ -1,0 +1,326 @@
+---
+title: "within sat decile topics and dictionary patterns on household income"
+author: "Chongjun Liao"
+date: "11/29/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,message=FALSE)
+```
+
+In analysis 5, we used SAT total score decile instead of household income decile, and we use the topics and dictionary patterns to predict household income. The regression models explain much less variation of income and they do worse on those who reported high SAT total score.
+
+
+```{r}
+library(dplyr)
+# topics by decile
+setwd("~/Desktop/DS4SI/final project/replication code & data/data")
+merged <- read.csv("merged_final.csv")
+
+income_df <- merged %>%
+  filter(FAMILY_INCOME > 10000)
+fi_cuts <- quantile(na.omit(income_df$FAMILY_INCOME),
+                    probs = c(.1,.2,.3,.4,.5,.6,.7,.8,.9))
+income_df$fi <- income_df$FAMILY_INCOME
+
+income_df <- income_df %>%
+  mutate(percentile = case_when(fi <= fi_cuts[1] ~ 1,
+                                fi > fi_cuts[1] & fi <= fi_cuts[2] ~ 2,
+                                fi > fi_cuts[2] & fi <= fi_cuts[3] ~ 3,
+                                fi > fi_cuts[3] & fi <= fi_cuts[4] ~ 4,
+                                fi > fi_cuts[4] & fi <= fi_cuts[5] ~ 5,
+                                fi > fi_cuts[5] & fi <= fi_cuts[6] ~ 6,
+                                fi > fi_cuts[6] & fi <= fi_cuts[7] ~ 7,
+                                fi > fi_cuts[7] & fi <= fi_cuts[8] ~ 8,
+                                fi > fi_cuts[8] & fi <= fi_cuts[9] ~ 9,
+                                fi > fi_cuts[9] ~ 10))
+just_essays_income <- replicate(10,NA)
+#1
+sat_perc <-  income_df %>%
+  filter(percentile == 1)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_income[1]=summary(mod)$adj.r.squared
+#2
+sat_perc <-  income_df %>%
+  filter(percentile == 2)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_income[2]=summary(mod)$adj.r.squared
+#3
+sat_perc <-  income_df %>%
+  filter(percentile == 3)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_income[3]=summary(mod)$adj.r.squared
+#4
+sat_perc <-  income_df %>%
+  filter(percentile == 4)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_income[4]=summary(mod)$adj.r.squared
+#5
+sat_perc <-  income_df %>%
+  filter(percentile == 5)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_income[5]=summary(mod)$adj.r.squared
+#6
+sat_perc <-  income_df %>%
+  filter(percentile == 6)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_income[6]=summary(mod)$adj.r.squared
+#7
+sat_perc <-  income_df %>%
+  filter(percentile == 7)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_income[7]=summary(mod)$adj.r.squared
+#8
+sat_perc <-  income_df %>%
+  filter(percentile == 8)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_income[8]=summary(mod)$adj.r.squared
+#9
+sat_perc <-  income_df %>%
+  filter(percentile == 9)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_income[9]=summary(mod)$adj.r.squared
+#10
+sat_perc <-  income_df %>%
+  filter(percentile == 10)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_income[10]=summary(mod)$adj.r.squared
+```
+
+```{r, error = TRUE}
+just_essays_dict <- replicate(10,NA)
+#1
+sat_perc <-  income_df %>%
+  filter(percentile == 1)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_dict[1]=summary(mod)$adj.r.squared
+#2
+sat_perc <-  income_df %>%
+  filter(percentile == 2)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_dict[2]=summary(mod)$adj.r.squared
+#3
+sat_perc <-  income_df %>%
+  filter(percentile == 3)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_dict[3]=summary(mod)$adj.r.squared
+#4
+sat_perc <-  income_df %>%
+  filter(percentile == 4)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_dict[4]=summary(mod)$adj.r.squared
+#5
+sat_perc <-  income_df %>%
+  filter(percentile == 5)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_dict[5]=summary(mod)$adj.r.squared
+#6
+sat_perc <-  income_df %>%
+  filter(percentile == 6)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_dict[6]=summary(mod)$adj.r.squared
+#7
+sat_perc <-  income_df %>%
+  filter(percentile == 7)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_dict[7]=summary(mod)$adj.r.squared
+#8
+sat_perc <-  income_df %>%
+  filter(percentile == 8)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_dict[8]=summary(mod)$adj.r.squared
+#9
+sat_perc <-  income_df %>%
+  filter(percentile == 9)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_dict[9]=summary(mod)$adj.r.squared
+#10
+sat_perc <-  income_df %>%
+  filter(percentile == 10)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(RSAT_TOTAL_SCORE ~ gamma,data = sat_perc)
+just_essays_dict[10]=summary(mod)$adj.r.squared
+```
+
+```{r}
+income_df <- merged %>%
+  filter(FAMILY_INCOME > 10000)
+fi_cuts <- quantile(na.omit(income_df$RSAT_TOTAL_SCORE),
+                    probs = c(.1,.2,.3,.4,.5,.6,.7,.8,.9))
+income_df$fi <- income_df$RSAT_TOTAL_SCORE
+
+income_df <- income_df %>%
+  mutate(percentile = case_when(fi <= fi_cuts[1] ~ 1,
+                                fi > fi_cuts[1] & fi <= fi_cuts[2] ~ 2,
+                                fi > fi_cuts[2] & fi <= fi_cuts[3] ~ 3,
+                                fi > fi_cuts[3] & fi <= fi_cuts[4] ~ 4,
+                                fi > fi_cuts[4] & fi <= fi_cuts[5] ~ 5,
+                                fi > fi_cuts[5] & fi <= fi_cuts[6] ~ 6,
+                                fi > fi_cuts[6] & fi <= fi_cuts[7] ~ 7,
+                                fi > fi_cuts[7] & fi <= fi_cuts[8] ~ 8,
+                                fi > fi_cuts[8] & fi <= fi_cuts[9] ~ 9,
+                                fi > fi_cuts[9] ~ 10))
+just_essays_income1 <- replicate(10,NA)
+#1
+sat_perc <-  income_df %>%
+  filter(percentile == 1)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_income1[1]=summary(mod)$adj.r.squared
+#2
+sat_perc <-  income_df %>%
+  filter(percentile == 2)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_income1[2]=summary(mod)$adj.r.squared
+#3
+sat_perc <-  income_df %>%
+  filter(percentile == 3)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_income1[3]=summary(mod)$adj.r.squared
+#4
+sat_perc <-  income_df %>%
+  filter(percentile == 4)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_income1[4]=summary(mod)$adj.r.squared
+#5
+sat_perc <-  income_df %>%
+  filter(percentile == 5)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_income1[5]=summary(mod)$adj.r.squared
+#6
+sat_perc <-  income_df %>%
+  filter(percentile == 6)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_income1[6]=summary(mod)$adj.r.squared
+#7
+sat_perc <-  income_df %>%
+  filter(percentile == 7)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_income1[7]=summary(mod)$adj.r.squared
+#8
+sat_perc <-  income_df %>%
+  filter(percentile == 8)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_income1[8]=summary(mod)$adj.r.squared
+#9
+sat_perc <-  income_df %>%
+  filter(percentile == 9)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_income1[9]=summary(mod)$adj.r.squared
+#10
+sat_perc <-  income_df %>%
+  filter(percentile == 10)
+gamma <- as.matrix(log(sat_perc[,6:75]))
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_income1[10]=summary(mod)$adj.r.squared
+```
+
+```{r}
+just_essays_dict1 <- replicate(10,NA)
+#1
+sat_perc <-  income_df %>%
+  filter(percentile == 1)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_dict1[1]=summary(mod)$adj.r.squared
+#2
+sat_perc <-  income_df %>%
+  filter(percentile == 2)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_dict1[2]=summary(mod)$adj.r.squared
+#3
+sat_perc <-  income_df %>%
+  filter(percentile == 3)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_dict1[3]=summary(mod)$adj.r.squared
+#4
+sat_perc <-  income_df %>%
+  filter(percentile == 4)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_dict1[4]=summary(mod)$adj.r.squared
+#5
+sat_perc <-  income_df %>%
+  filter(percentile == 5)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_dict1[5]=summary(mod)$adj.r.squared
+#6
+sat_perc <-  income_df %>%
+  filter(percentile == 6)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_dict1[6]=summary(mod)$adj.r.squared
+#7
+sat_perc <-  income_df %>%
+  filter(percentile == 7)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_dict1[7]=summary(mod)$adj.r.squared
+#8
+sat_perc <-  income_df %>%
+  filter(percentile == 8)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_dict1[8]=summary(mod)$adj.r.squared
+#9
+sat_perc <-  income_df %>%
+  filter(percentile == 9)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_dict1[9]=summary(mod)$adj.r.squared
+#10
+sat_perc <-  income_df %>%
+  filter(percentile == 10)
+gamma <- as.matrix(sat_perc[,76:167])
+mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
+just_essays_dict1[10]=summary(mod)$adj.r.squared
+```
+
+```{r, fig.cap="topics on SAT total score v.s. on household income"}
+par(mfrow=c(1,2))
+barplot(just_essays_income)
+title("sat total, income decile")
+barplot(just_essays_income1)
+lines(just_essays_income1,col="red")
+title("income, sat decile")
+```
+
+```{r, fig.cap="Dictionary patternson SAT total score v.s. on household income"}
+par(mfrow=c(1,2))
+barplot(just_essays_dict)
+title("sat total, income decile")
+barplot(just_essays_dict1)
+lines(just_essays_dict1,col="red")
+title("income, sat decile")
+```
