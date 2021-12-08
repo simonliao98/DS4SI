@@ -307,20 +307,13 @@ mod <- lm(FAMILY_INCOME ~ gamma,data = sat_perc)
 just_essays_dict1[10]=summary(mod)$adj.r.squared
 ```
 
-```{r, fig.cap="topics on SAT total score v.s. on household income"}
+```{r}
 par(mfrow=c(1,2))
-barplot(just_essays_income)
-title("sat total, income decile")
-barplot(just_essays_income1)
+barplot(just_essays_income1,ylim = c(0,0.13), xlab="SAT Total Score")
 lines(just_essays_income1,col="red")
-title("income, sat decile")
+title("topics on income")
+barplot(just_essays_dict1,ylim = c(0,0.13), xlab="SAT Total Score")
+lines(just_essays_dict1,col="red")
+title("dictionary pattern on income")
 ```
 
-```{r, fig.cap="Dictionary patternson SAT total score v.s. on household income"}
-par(mfrow=c(1,2))
-barplot(just_essays_dict)
-title("sat total, income decile")
-barplot(just_essays_dict1)
-lines(just_essays_dict1,col="red")
-title("income, sat decile")
-```
